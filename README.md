@@ -1,5 +1,5 @@
 # spyhop
-Container monitoring web UI inspired by docker-mon.
+Container monitoring web UI inspired by [docker-mon](https://github.com/icecrime/docker-mon).
 
 ## Features
 
