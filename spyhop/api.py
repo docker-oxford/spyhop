@@ -7,10 +7,7 @@ def get_container_stats(container_id):
     return stats
 
 def main():
-    container_id = 'db72a8931dcd'
-    stats = get_container_stats(container_id)
-    for stat in stats:
-        print(stat)
+    pass
 
 if __name__ == '__main__':
     main()
