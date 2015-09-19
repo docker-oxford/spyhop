@@ -5,6 +5,10 @@ import json
 
 app = Flask(__name__)
 
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
+
 @app.route('/api/<container_id>')
 def stats(container_id):
     container_stats = get_container_stats(container_id)
@@ -13,7 +17,7 @@ def stats(container_id):
 @app.route('/api/ps')
 def ps():
     all_containers = get_all_containers()
-    return jsonify({"containers": all_containers})
+    return jsonify({"data": all_containers})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

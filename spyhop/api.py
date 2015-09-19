@@ -3,8 +3,11 @@ from docker import Client
 
 def get_container_stats(container_id):
     cli = Client(base_url='unix://var/run/docker.sock')
-    stats = cli.stats(container_id)
-    return stats
+    try:
+        stats = cli.stats(container_id)
+        return stats
+    except Exception, error:
+        return error
 
 def get_all_containers():
     cli = Client(base_url='unix://var/run/docker.sock')
