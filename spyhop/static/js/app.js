@@ -1,8 +1,10 @@
 $(function () {
 
-    var TIMEOUT = 1000, SHIFT = 20;
+    var RELOAD = 25000, TIMEOUT = 5000, SHIFT = 20, PERCISION = 2;
 
-    $('#containers').dataTable({
+    var SERIES = {};
+
+    var table = $('#containers').DataTable({
 	"ajax": "/api/ps",
 	"columns": [
 	    { "title": "Container ID", "data": "Id" },
@@ -12,28 +14,60 @@ $(function () {
 	    { "title": "Status", "data": "Status" },
 	    { "title": "Ports", "data": "Ports[0].PublicPort" },
 	    { "title": "Names", "data": "Names" }
-	]
+	],
+	"fnInitComplete": function (settings) {
+
+	    if (settings.json) {
+		for (var i = 0; i < settings.json.data.length; i++) {
+
+		    var hash = settings.json.data[i].Id;
+
+		    SERIES[hash] = chart.addSeries({
+			name: settings.json.data[i].Names,
+		    });
+
+		}
+		cpuPercent();
+	    }
+	},
+
+	"fnDrawCallback": function(settings) {
+
+	    if (settings.json) {
+
+		for (var i = 0; i < settings.json.data.length; i++) {
+		    console.log(settings.json.data[i].Id);
+		}
+	    }
+	}
     });
 
-    function rx_bytes() {
 
-	$.getJSON('/api/db72a8931dcd', function (data) {
+    setInterval(function () {
+	table.ajax.reload(null, false);
+    }, RELOAD);
 
-	    var series = chart.series[0], shift = series.data.length > SHIFT;
-	    chart.series[0].addPoint(data.cpu_stats.cpu_usage.total_usage, true, shift);
-	    setTimeout(rx_bytes, TIMEOUT);
 
-	});
+    function cpuPercent() {
 
+	for (var containerId in SERIES) {
+
+	    $.getJSON('/api/curated/' + containerId, function (data) {
+
+		console.log('calling /api/curated/' + containerId);
+
+		var series = SERIES[containerId], shift = series.data.length > SHIFT;
+		series.addPoint(parseFloat(data.cpu_percent.toFixed(PERCISION)), true, shift);
+		setTimeout(cpuPercent, TIMEOUT);
+
+	    });
+	}
     }
 
     var chart = new Highcharts.Chart({
 
 	chart: {
 	    renderTo: 'charts',
-	    events: {
-		load: rx_bytes
-	    }
 	},
 
 	credits: {
@@ -41,18 +75,14 @@ $(function () {
 	},
 
 	title: {
-	    text : 'Network Traffic'
+	    text : 'CPU %'
 	},
 
 	exporting: {
 	    enabled: false
 	},
 
-	series: [{
-	    name: 'Random data',
-	    data: []
-	}]
-
     });
+
 
 });
