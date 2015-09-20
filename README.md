@@ -1,3 +1,5 @@
+![spyhop](spyhop.png)
+
 # spyhop
 Container monitoring web UI inspired by [docker-mon](https://github.com/icecrime/docker-mon).
 
