@@ -30,7 +30,7 @@ $(function () {
                     var hash = settings.json.data[i].Id.slice(0, 12);
 
                     SERIES[hash] = chart.addSeries({
-                        name: hash
+                        name: settings.json.data[i].Names[0]
                     });
 
 		}
