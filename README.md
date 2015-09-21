@@ -3,6 +3,27 @@
 # spyhop
 Container monitoring web UI inspired by [docker-mon](https://github.com/icecrime/docker-mon).
 
+## Get Spyhop 
+
+### Requirements
+
+* Python 2.7 or above
+* pip
+
+### Installation
+
+    pip install -r requirements.txt
+
+### Run
+
+On a host running containers:
+
+    ./spyhop.py
+
+Then point your browser to:
+
+    localhost:5000
+
 ## Features
 
 * List all containers running on a host
