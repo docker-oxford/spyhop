@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-from docker import Client
-from flask import jsonify
+
 import json
+from docker import Client
+
 
 class Api:
     def __init__(self, socket='unix://var/run/docker.sock'):
@@ -78,4 +79,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
