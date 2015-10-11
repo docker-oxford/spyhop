@@ -30,7 +30,6 @@ class Api:
 
     def calculate_memory_percent(self, stats):
         memory_percent = (float(stats['memory_stats']['usage']) / float(stats['memory_stats']['limit'])) * 100
-        print(memory_percent)
         return memory_percent
 
     def calculate_network(self, stats1, stats2):
