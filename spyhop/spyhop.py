@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from flask import Flask, jsonify
 import argparse
+import os
 from api import Api
 import json
 
@@ -8,13 +9,13 @@ app = Flask(__name__)
 
 # Get command line arguments
 parser = argparse.ArgumentParser(description='Run Spyhop')
-parser.add_argument('--socket', metavar='SOCKET', type=str, nargs='?', default='unix://var/run/docker.sock',
+parser.add_argument('-H', '--host', metavar='HOST', type=str, nargs='?', default=os.getenv('DOCKER_HOST', 'unix://var/run/docker.sock'),
                    help='Socket on which to talk to Docker Daemon')
 args = parser.parse_args()
-socket = args.socket
+host = args.host
 
 # Create API connection
-docker_api = Api(socket)
+docker_api = Api(host)
 
 @app.route('/')
 def index():
